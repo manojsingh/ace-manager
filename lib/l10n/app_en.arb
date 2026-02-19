@@ -1,0 +1,243 @@
+{
+  "appTitle": "Tennis League",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "heroTitle": "Your Local Tennis Community, Managed.",
+  "@heroTitle": {
+    "description": "Main hero text on landing page"
+  },
+  "heroSubtitle": "Join leagues, track scores, and find your perfect partner.",
+  "@heroSubtitle": {
+    "description": "Subtitle below hero text"
+  },
+  "joinLeagueButton": "Join a League",
+  "@joinLeagueButton": {
+    "description": "Button text to join a league"
+  },
+  "signInButton": "Sign In",
+  "@signInButton": {
+    "description": "Button text to sign in"
+  },
+  "whyJoinUsTitle": "WHY JOIN US?",
+  "@whyJoinUsTitle": {
+    "description": "Title for features section"
+  },
+  "whyJoinUsSubtitle": "Built for the Love of the Game",
+  "@whyJoinUsSubtitle": {
+    "description": "Subtitle for features section"
+  },
+  "featureLeagueManagementTitle": "League Management",
+  "featureLeagueManagementDesc": "Automatic brackets, real-time standings, and seasonal play-offs made easy.",
+  "featureSmartSchedulingTitle": "Smart Scheduling",
+  "featureSmartSchedulingDesc": "Coordinate matches and find available courts with our intelligent booking system.",
+  "featureDetailedStatsTitle": "Detailed Stats",
+  "featureDetailedStatsDesc": "Analyze your serve accuracy, win rates, and track your climb up the rankings.",
+  "navHome": "Home",
+  "navHome": "Home",
+  "navLeagues": "Leagues",
+  "navMatches": "Matches",
+  "navFind": "Find",
+  "navProfile": "Profile",
+  "labelWinRate": "Win Rate",
+  "labelMatches": "Matches",
+  "labelRank": "Rank",
+  "sectionMyLeagues": "My Leagues",
+  "actionViewAll": "View All",
+  "tagCompetitive": "Competitive",
+  "tagTournament": "Tournament",
+  "tagSocial": "Social",
+  "labelNextMatch": "Next Match",
+  "labelStatus": "Status",
+  "labelLastMatch": "Last Match",
+  "joinUsTitle": "Join Us",
+  "@joinUsTitle": {
+    "description": "Title for Join Us page"
+  },
+  "joinUsSubtitle": "Register to start your league journey.",
+  "@joinUsSubtitle": {
+    "description": "Subtitle for Join Us page"
+  },
+  "labelFullName": "Full Name",
+  "hintFullName": "John Doe",
+  "labelEmail": "Email",
+  "hintEmail": "email@example.com",
+  "labelPhone": "Phone Number",
+  "hintPhone": "+1 (555) 000-0000",
+  "labelSkillLevel": "Skill Level",
+  "skillBeginner": "Beginner",
+  "skillBeginnerDesc": "NTRP 1.0-2.5",
+  "skillIntermediate": "Intermediate",
+  "skillIntermediateDesc": "NTRP 3.0-4.0",
+  "skillAdvanced": "Advanced",
+  "skillAdvancedDesc": "NTRP 4.5+",
+  "labelPreferredHand": "Preferred Hand",
+  "handRight": "Right-handed",
+  "handLeft": "Left-handed",
+  "welcomeBackLabel": "Welcome back",
+  "hiUser": "Hi, {name}!",
+  "@hiUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "labelUpcoming": "Upcoming",
+  "labelOpponent": "Opponent",
+  "actionGetDirections": "Get Directions",
+  "sectionQuickActions": "Quick Actions",
+  "actionMarkAvailability": "Mark\nAvailability",
+  "actionLogScore": "Log Score",
+  "actionViewStandings": "View\nStandings",
+  "sectionRecentActivity": "Recent Activity",
+  "actionSeeAll": "See All",
+  "tagAnnouncement": "Announcement",
+  "tagMatchResult": "Match Result",
+  "tagRankingUpdate": "Ranking Update",
+  "navStats": "Stats",
+  "createAccountButton": "Create Account",
+  "signUpSuccess": "Sign up successful! Please check your email to confirm your account.",
+  "passwordError": "Password must be at least 6 characters",
+  "termsText": "By creating an account, you agree to our ",
+  "termsLink": "Terms of Service",
+  "andText": " and ",
+  "privacyLink": "Privacy Policy",
+  "alreadyHaveAccount": "Already have an account?",
+  "logInLink": "Log in",
+  "signInTitle": "Sign In",
+  "welcomeBack": "Welcome Back",
+  "welcomeSubtitle": "Step onto the court and manage your league",
+  "emailOrUsername": "Email or Username",
+  "enterEmail": "Enter your email",
+  "password": "Password",
+  "enterPassword": "Enter your password",
+  "forgotPassword": "Forgot Password?",
+  "orContinueWith": "Or continue with",
+  "dontHaveAccount": "Don't have an account?",
+  "joinUsLink": "Join Us",
+  "signInError": "Error signing in. Please check your credentials.",
+  "emailNotConfirmedError": "Please confirm your email address before logging in.",
+  "networkError": "Network error. Please check your connection.",
+  "unexpectedError": "Unexpected error occurred",
+  "labelSessions": "Sessions",
+  "actionCreateSession": "Create Session",
+  "titleCreateSession": "Create New Session",
+  "labelStartDate": "Start Date",
+  "labelEndDate": "End Date",
+  "labelSessionName": "Session Name (Optional)",
+  "sessionNoActiveFound": "No active sessions found",
+  "labelCurrentSession": "Current Session",
+  "msgGoodLuck": "Good luck in the matches!",
+  "msgWelcomeSession": "Welcome to {name}!",
+  "@msgWelcomeSession": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "actionAvailability": "Availability",
+  "titleStandings": "Standings",
+  "actionMessageGroup": "Message Group",
+  "actionManagePlayers": "Manage Players",
+  "msgNoStandings": "No standings yet",
+  "labelUnknownPlayer": "Unknown Player",
+  "labelYou": "YOU",
+  "sectionRecentResults": "Recent Results",
+  "msgNoCompletedMatches": "No completed matches yet",
+  "labelWinAbbr": "W",
+  "labelLossAbbr": "L",
+  "labelMatchWon": "MATCH WON",
+  "labelMatchLost": "MATCH LOST",
+  "msgMatchesComingSoon": "Matches Tab - Coming Soon",
+  "titlePlayerStats": "Player Stats",
+  "labelWins": "Wins",
+  "labelLosses": "Losses",
+  "titleClubDetails": "Club Details",
+  "labelPrimaryAdminView": "Primary Administrative View",
+  "sectionLocation": "LOCATION",
+  "labelFullAddress": "Full Address",
+  "sectionCourtsInventory": "COURTS INVENTORY",
+  "labelCourtsTotal": "{count} Courts Total",
+  "@labelCourtsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionAddNewCourt": "Add New Court",
+  "hintCourtName": "Court Name (e.g., Court 1)",
+  "hintSurfaceType": "Surface Type (e.g., Red Clay)",
+  "actionCancel": "Cancel",
+  "actionAdd": "Add",
+  "actionEditClubDetails": "Edit Club Details",
+  "labelClubNameRequired": "Club Name *",
+  "labelLocationRequired": "Location *",
+  "labelCourtCount": "Court Count",
+  "labelImageUrl": "Image URL",
+  "actionSave": "Save",
+  "msgClubUpdatedSuccess": "Club updated successfully",
+  "msgJoinedSession": "You have joined the session!",
+  "msgJoinSessionFailed": "Failed to join session.",
+  "titleInviteMembers": "Invite Members",
+  "labelLeagueAccessLink": "LEAGUE ACCESS LINK",
+  "actionCopyLink": "Copy Link",
+  "msgLinkCopied": "Link copied to clipboard",
+  "labelQuickShareVia": "QUICK SHARE VIA...",
+  "shareWhatsApp": "WhatsApp",
+  "shareIMessage": "iMessage",
+  "shareFacebook": "Facebook",
+  "shareMore": "More",
+  "labelAddExistingMembers": "ADD EXISTING MEMBERS",
+  "hintSearchMembers": "Search by name or username",
+  "labelSuggestedPlayers": "SUGGESTED PLAYERS",
+  "msgNoUsersFound": "No users found",
+  "labelInviteViaEmail": "INVITE VIA EMAIL",
+  "hintEnterEmailAddress": "Enter email address",
+  "actionSendInvitation": "Send Invitation",
+  "msgInvitationSent": "Invitation sent successfully",
+  "labelPendingInvites": "PENDING INVITES ({count})",
+  "@labelPendingInvites": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "msgResentInvite": "Resent invite to {email}",
+  "@msgResentInvite": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "actionResend": "Resend",
+  "msgUserAdded": "{user} added to league",
+  "@msgUserAdded": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "msgErrorLoadingUsers": "Error loading users: {error}",
+  "@msgErrorLoadingUsers": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "msgFailedToAddUser": "Failed to add user: {error}",
+  "@msgFailedToAddUser": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "msgNoParticipants": "No participants found for this session"
+}
