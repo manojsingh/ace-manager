@@ -12,6 +12,7 @@ import 'package:ace_manager/screens/league/configure_session_page.dart';
 import 'package:ace_manager/screens/league/session_schedule_page.dart';
 import 'package:ace_manager/screens/league/session_availability_view_page.dart';
 import 'package:ace_manager/screens/league/automatic_scheduler_page.dart';
+import 'package:ace_manager/screens/notifications_page.dart';
 
 class SessionDashboardPage extends StatefulWidget {
   final String leagueId;
@@ -46,6 +47,7 @@ class _SessionDashboardPageState extends State<SessionDashboardPage> {
   List<SessionParticipant> _standings = [];
   LeagueMatch? _nextMatch;
   List<LeagueMatch> _recentResults = [];
+  List<NotificationModel> _notifications = [];
 
   @override
   void initState() {
@@ -101,6 +103,9 @@ class _SessionDashboardPageState extends State<SessionDashboardPage> {
             .where((m) => m.status == 'completed')
             .take(5)
             .toList();
+            
+        // Fetch notifications
+        _notifications = await LeagueService.instance.getUnreadNotifications();
       }
     } catch (e) {
       debugPrint('Error loading dashboard data: $e');
@@ -225,9 +230,38 @@ class _SessionDashboardPageState extends State<SessionDashboardPage> {
                           ),
                         ],
                       ),
-                      _buildCircularButton(
-                        icon: Icons.notifications_none,
-                        onTap: () {},
+                      Stack(
+                       clipBehavior: Clip.none,
+                       children: [
+                         _buildCircularButton(
+                           icon: Icons.notifications_none,
+                           onTap: () {
+                             // Navigate to notifications
+                             Navigator.of(context).push(MaterialPageRoute(builder: (c) => NotificationsPage())).then((_) => _loadData(showLoading: false));
+                           },
+                         ),
+                         FutureBuilder<List<NotificationModel>>(
+                           future: LeagueService.instance.getUnreadNotifications(),
+                           builder: (context, snapshot) {
+                              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                return Positioned(
+                                 top: 0,
+                                 right: 0,
+                                 child: Container(
+                                   width: 10,
+                                   height: 10,
+                                   decoration: BoxDecoration(
+                                     color: Colors.red,
+                                     shape: BoxShape.circle,
+                                     border: Border.all(color: Colors.white, width: 2),
+                                   ),
+                                 ),
+                               );
+                              }
+                              return const SizedBox.shrink();
+                           },
+                         ),
+                       ],
                       ),
                     ],
                   ),
@@ -296,48 +330,105 @@ class _SessionDashboardPageState extends State<SessionDashboardPage> {
             const SizedBox(height: 8),
             // Announcement Toast
             if (_currentSession?.status == 'upcoming' || _currentSession?.status == 'active')
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: hoverTint,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: primaryColor.withValues(alpha: 0.2)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.campaign, color: primaryColor, size: 20),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'STATUS: ${_currentSession?.status?.toUpperCase()}',
-                          style: textTheme.labelSmall?.copyWith(
-                            color: primaryColor,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5,
+            // Notifications / Status Box
+            if (_notifications.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF4E5), // Light orange for notifications
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.notifications_active, color: Colors.orange, size: 20),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _notifications.first.title.toUpperCase(),
+                            style: textTheme.labelSmall?.copyWith(
+                              color: Colors.orange[800],
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _currentSession?.name != null ? AppLocalizations.of(context)!.msgWelcomeSession(_currentSession!.name!) : AppLocalizations.of(context)!.msgGoodLuck,
-                          style: textTheme.bodySmall?.copyWith(
-                            color: const Color(0xFF4A4A4A),
-                            height: 1.3,
+                          const SizedBox(height: 4),
+                          Text(
+                            _notifications.first.message,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: textDark,
+                              height: 1.3,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: const Icon(Icons.close, color: textGrey, size: 18),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () async {
+                        final notificationId = _notifications.first.id;
+                        // Optimistic update
+                        setState(() {
+                          _notifications.removeAt(0);
+                        });
+                        try {
+                          await LeagueService.instance.markNotificationAsRead(notificationId);
+                        } catch (e) {
+                          debugPrint('Error marking notification as read: $e');
+                          // Optionally revert or show error, but silent fail is often better for UI dismissals
+                        }
+                      },
+                      child: const Icon(Icons.close, color: textGrey, size: 18),
+                    ),
+                  ],
+                ),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: hoverTint,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: primaryColor.withValues(alpha: 0.2)),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.campaign, color: primaryColor, size: 20),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'STATUS: ${_currentSession?.status?.toUpperCase() ?? "UNKNOWN"}',
+                            style: textTheme.labelSmall?.copyWith(
+                              color: primaryColor,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _currentSession?.name != null ? AppLocalizations.of(context)!.msgWelcomeSession(_currentSession!.name!) : AppLocalizations.of(context)!.msgGoodLuck,
+                            style: textTheme.bodySmall?.copyWith(
+                              color: const Color(0xFF4A4A4A),
+                              height: 1.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: const Icon(Icons.close, color: textGrey, size: 18),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
             const SizedBox(height: 24),
 

@@ -390,6 +390,26 @@ class LeagueService {
     }
   }
 
+  Future<List<NotificationModel>> getNotifications({int limit = 50}) async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return [];
+
+    try {
+      final response = await _client
+          .from('notifications')
+          .select()
+          .eq('user_id', userId)
+          .order('created_at', ascending: false)
+          .limit(limit);
+
+      final data = response as List<dynamic>;
+      return data.map((json) => NotificationModel.fromJson(json)).toList();
+    } catch (e) {
+      debugPrint('Error fetching notifications: $e');
+      return [];
+    }
+  }
+
   Future<void> markNotificationAsRead(String notificationId) async {
     try {
       await _client
@@ -398,6 +418,22 @@ class LeagueService {
           .eq('id', notificationId);
     } catch (e) {
       debugPrint('Error marking notification as read: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> markAllNotificationsAsRead() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return;
+
+    try {
+      await _client
+          .from('notifications')
+          .update({'is_read': true})
+          .eq('user_id', userId)
+          .eq('is_read', false);
+    } catch (e) {
+      debugPrint('Error marking all notifications as read: $e');
       rethrow;
     }
   }

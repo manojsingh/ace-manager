@@ -7,8 +7,10 @@ import 'package:ace_manager/screens/league_members_page.dart';
 import 'package:ace_manager/screens/league/invite_member_page.dart';
 import 'package:ace_manager/screens/league/create_session_page.dart';
 import 'package:ace_manager/screens/league/session_dashboard_page.dart';
+import 'package:ace_manager/screens/dashboard_page.dart';
 import 'package:ace_manager/services/league_service.dart';
 import 'package:ace_manager/models/league_session.dart';
+import 'package:ace_manager/screens/notifications_page.dart';
 import 'package:intl/intl.dart';
 
 class LeagueDetailsPage extends StatefulWidget {
@@ -272,6 +274,17 @@ class _LeagueDetailsPageState extends State<LeagueDetailsPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        _buildNavItem(
+                          context, 
+                          textTheme, 
+                          Icons.home, 
+                          'HOME', 
+                          false,
+                          onTap: () => Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (context) => const DashboardPage()),
+                            (route) => false,
+                          ),
+                        ),
                         _buildNavItem(context, textTheme, Icons.calendar_month, 'SESSIONS', true),
                         _buildNavItem(
                           context, 
@@ -289,7 +302,16 @@ class _LeagueDetailsPageState extends State<LeagueDetailsPage> {
                             )
                           ),
                         ),
-                        _buildNavItem(context, textTheme, Icons.settings, 'SETTINGS', false),
+                        _buildNavItem(
+                          context, 
+                          textTheme, 
+                          Icons.person, 
+                          'PROFILE', 
+                          false,
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => const ProfilePage())
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -304,6 +326,7 @@ class _LeagueDetailsPageState extends State<LeagueDetailsPage> {
 
   Widget _buildHeader(BuildContext context, TextTheme textTheme) {
     return Container(
+      // Header container
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -352,25 +375,39 @@ class _LeagueDetailsPageState extends State<LeagueDetailsPage> {
             ],
           ),
           
-          // Invite Button
-          if (widget.userRole == 'owner' || widget.userRole == 'admin')
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => InviteMemberPage(
-                    leagueId: widget.leagueId,
-                  )),
-                );
-              },
-              icon: const Icon(Icons.person_add, size: 20),
-              label: const Text('Invite'),
-              style: TextButton.styleFrom(
-                foregroundColor: primaryColor,
-                backgroundColor: primaryColor.withValues(alpha: 0.1),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          // Notification Icon
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (c) => NotificationsPage())).then((_) => _refreshSessions());
+                },
+                icon: const Icon(Icons.notifications_outlined, color: textDark, size: 28),
               ),
-            ),
+              FutureBuilder<List<NotificationModel>>(
+                future: LeagueService.instance.getUnreadNotifications(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    return Positioned(
+                      top: 8,
+                      right: 8,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+            ],
+          ),
         ],
       ),
     );

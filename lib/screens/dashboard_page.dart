@@ -8,6 +8,7 @@ import 'package:ace_manager/services/user_service.dart';
 import 'package:ace_manager/screens/league_details_page.dart';
 import 'package:ace_manager/screens/profile_page.dart';
 import 'package:ace_manager/screens/admin_dashboard_page.dart';
+import 'package:ace_manager/screens/notifications_page.dart';
 import 'package:ace_manager/l10n/app_localizations.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -73,10 +74,37 @@ class _DashboardPageState extends State<DashboardPage> {
                          Text('My Dashboard', style: textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, color: textCharcoal)),
                        ],
                      ),
-                     CircleAvatar(
-                       radius: 20,
-                       backgroundColor: primaryColor,
-                       child: const Icon(Icons.person, color: Colors.white),
+                     Stack(
+                       clipBehavior: Clip.none,
+                       children: [
+                         IconButton(
+                           onPressed: () {
+                             Navigator.of(context).push(MaterialPageRoute(builder: (c) => const NotificationsPage())).then((_) => setState(() {}));
+                           },
+                           icon: const Icon(Icons.notifications_outlined, color: textCharcoal, size: 28),
+                         ),
+                         FutureBuilder<List<NotificationModel>>(
+                           future: LeagueService.instance.getUnreadNotifications(),
+                           builder: (context, snapshot) {
+                              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                                return Positioned(
+                                 top: 8,
+                                 right: 8,
+                                 child: Container(
+                                   width: 10,
+                                   height: 10,
+                                   decoration: BoxDecoration(
+                                     color: Colors.red,
+                                     shape: BoxShape.circle,
+                                     border: Border.all(color: Colors.white, width: 2),
+                                   ),
+                                 ),
+                               );
+                              }
+                              return const SizedBox.shrink();
+                           },
+                         ),
+                       ],
                      ),
                    ],
                  ),
@@ -486,7 +514,7 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index, {bool isActive = false}) {
+  Widget _buildNavItem(IconData icon, String label, int index, {bool isActive = false, bool hasBadge = false}) {
     final color = isActive || _selectedIndex == index ? primaryColor : textGrey;
     return GestureDetector(
       onTap: () {
@@ -501,7 +529,34 @@ class _DashboardPageState extends State<DashboardPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: color),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(icon, color: color),
+              if (hasBadge)
+                 FutureBuilder<List<NotificationModel>>(
+                  future: LeagueService.instance.getUnreadNotifications(),
+                  builder: (context, snapshot) {
+                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                       return Positioned(
+                        top: -2,
+                        right: -2,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 1.5),
+                          ),
+                        ),
+                      );
+                     }
+                     return const SizedBox.shrink();
+                  },
+                ),
+            ],
+          ),
           const SizedBox(height: 4),
           Text(
             label.toUpperCase(),
